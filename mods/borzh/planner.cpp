@@ -338,7 +338,7 @@ void GeneratePddl( bool bFromBotBelief )
 	}
 	else
 	{
-		DebugAssert( g_pBot->m_cCurrentBigTask.iTask == EBorzhTaskButtonTryDoor );
+		DebugAssert( g_pBot->m_cCurrentBigTask.iTask == EBorzhTaskButtonDoorTry );
 
 		TEntityIndex iButton = GET_2ND_BYTE(g_pBot->m_cCurrentBigTask.iArgument);
 		TEntityIndex iDoor = GET_3RD_BYTE(g_pBot->m_cCurrentBigTask.iArgument);

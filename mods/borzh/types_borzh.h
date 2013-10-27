@@ -36,7 +36,8 @@ enum TBorzhTasks
 	EBorzhTaskWaitIndications,                   ///< Wait for commands of other player.
 
 	// Next tasks are tasks that consist of several atomic tasks. Ordered by priority, i.e. explore has higher priority than try button.
-	EBorzhTaskButtonTryDoor,                     ///< Check which doors opens a button / check if button toggles one door in particular.
+	EBorzhTaskButtonDoorTry,                     ///< Check which doors opens a button / check if button toggles one door in particular.
+	EBorzhTaskButtonDoorTryPlan,                 ///< Same but using planner first to go to button/door.
 	EBorzhTaskBringBox,                          ///< Put box near a wall to climb it.
 	EBorzhTaskExplore,                           ///< Exploring new area.
 	EBorzhTaskGoToGoal,                          ///< Performing go to goal task.
@@ -53,13 +54,13 @@ enum TBotActions
 {
 	EBotActionInvalid = -1,                      ///< Invalid action.
 	EBotActionMove = 0,                          ///< Go to given area.
+	EBotActionFall,                              ///< Fall from a wall.
 	EBotActionPushButton,                        ///< Push given button.
 	EBotActionShootButton,                       ///< Shoot given button.
 	EBotActionCarryBox,                          ///< Carry a box.
 	EBotActionCarryBoxFar,                       ///< Carry a box from far distance.
 	EBotActionDropBox,                           ///< Drop a box.
 	EBotActionClimbBox,                          ///< Climb to a box.
-	EBotActionFall,                              ///< Fall from a wall.
 
 	EBotActionTotal                              ///< Amount of actions.
 };

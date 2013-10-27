@@ -521,13 +521,13 @@ const good::string& CTypeToString::BotCommandToString( TBotChat iCommand )
 good::string aBotActions[EBotActionTotal] =
 {
 	"MOVE",
+	"FALL",
 	"PUSH-BUTTON",
 	"SHOOT-BUTTON",
 	"CARRY-BOX",
 	"CARRY-BOX-FAR",
 	"DROP-BOX",
 	"CLIMB-BOX",
-	"FALL",
 };
 
 int CTypeToString::BotActionFromString( const good::string& sAction )
@@ -569,7 +569,7 @@ good::string aBorzhTasks[EBorzhTaskTotal] =
 	"EBorzhTaskWaitIndications",                   ///< Wait for commands of other player.
 
 	// Next tasks are tasks that consist of several atomic tasks. Ordered by priority, i.e. explore has higher priority than try button.
-	"EBorzhTaskButtonTryDoors",                    ///< Check which doors opens a button. Argument: index is button, type is bool (already pushed or still not).
+	"EBorzhTaskButtonDoorTrys",                    ///< Check which doors opens a button. Argument: index is button, type is bool (already pushed or still not).
 	"EBorzhTaskBringBox",                          ///< Put box near a wall to climb it.
 	"EBorzhTaskExplore",                           ///< Exploring new area.
 	"EBorzhTaskGoToGoal",                          ///< Performing go to goal task.

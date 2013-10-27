@@ -88,9 +88,11 @@ protected: // Methods.
 	// Check if door is reachable.
 	static TWaypointId GetDoorWaypoint( TEntityIndex iDoor, const good::bitset& cReachableAreas );
 
+	// Return true if current task is to try some button.
+	bool IsTryingButton() { return (m_cCurrentBigTask.iTask == EBorzhTaskButtonDoorTry) || (m_cCurrentBigTask.iTask == EBorzhTaskButtonDoorTryPlan); }
+
 	// Return true if current task needs collaborative players.
-	bool IsCollaborativeTask() { return (m_cCurrentBigTask.iTask == EBorzhTaskButtonTryDoor) || (m_cCurrentBigTask.iTask == EBorzhTaskBringBox) || 
-	                                    (m_cCurrentBigTask.iTask == EBorzhTaskGoToGoal); }
+	bool IsCollaborativeTask() { return IsTryingButton() || (m_cCurrentBigTask.iTask == EBorzhTaskBringBox) || (m_cCurrentBigTask.iTask == EBorzhTaskGoToGoal); }
 
 	// Return true if using a planner.
 	bool IsUsingPlanner() { return IsCollaborativeTask() && (m_cCurrentBigTask.iArgument&1); }
@@ -166,7 +168,7 @@ protected: // Methods.
 		if ( m_cCurrentTask.iTask == EBorzhTaskWait )
 			m_cCurrentTask.iArgument = (m_fEndWaitTime - CBotrixPlugin::fTime) * 1000; // Save only time left to wait.
 		m_cTaskStack.push_back(m_cCurrentTask);
-		m_cCurrentTask.iTask = EBorzhTaskInvalid;
+		TaskFinish();
 	}
 
 	// Wait given amount of milliseconds.
@@ -189,7 +191,7 @@ protected: // Methods.
 	{
 		SaveCurrentTask();
 		PushSpeakTask(iChat, iArgument, iType, iIndex);
-		m_cCurrentTask.iTask = EBorzhTaskInvalid;
+		TaskFinish();
 	}
 
 	// Start planner trying to reach goal area for all collaborative players.
@@ -207,6 +209,9 @@ protected: // Methods.
 
 	// Perform speak task, say a phrase.
 	void DoSpeakTask( int iArgument );
+
+	// End current task.
+	void TaskFinish() { m_cCurrentTask.iTask = EBorzhTaskInvalid; }
 
 	// End big task.
 	void BigTaskFinish();
@@ -229,7 +234,7 @@ protected: // Methods.
 	void CancelTasksInStack()
 	{
 		m_cTaskStack.clear();
-		m_cCurrentTask.iTask = EBorzhTaskInvalid;
+		TaskFinish();
 		m_bNeedMove = m_bNeedAim = false;
 	}
 
@@ -335,6 +340,7 @@ protected: // Members.
 	static const int m_iTimeToWaitPlayer = 30000;           // Wait 60 seconds for another player.
 
 	static good::vector<TEntityIndex> m_aLastPushedButtons; // We need to know the order of pushed buttons.
+	static TBotChat m_iLastProposal;                        // Last proposal to do something.
 	static CBorzhTask m_cCurrentProposedTask;               // Last proposed task.
 
 	typedef good::vector< CBorzhTask > task_stack_t;        // Typedef for stack of tasks.
@@ -355,7 +361,7 @@ protected: // Members.
 	good::bitset m_cSeenDoors;                              // Seen doors. Other bot could see it also.
 	good::bitset m_cOpenedDoors;                            // Opened doors. Closed door means seen & !opened.
 	good::bitset m_cFalseOpenedDoors;                       // Used when checking a button.
-	good::bitset m_cCheckedDoors;                           // Useful bitset when checking doors.
+	good::bitset m_cDoorsToCheck;                           // Useful bitset when checking doors.
 	good::bitset m_cUnknownDoors;                           // Doors with unknown status.
 
 	good::bitset m_cSeenButtons;                            // Seen buttons. Other bot could see it also.
